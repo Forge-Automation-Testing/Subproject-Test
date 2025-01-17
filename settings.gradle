@@ -1,0 +1,31 @@
+pluginManagement {
+    repositories {
+        mavenLocal()
+        gradlePluginPortal()
+    }
+}
+
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.7.0'
+}
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        libs {
+            library('gson', 'com.google.code.gson:gson:2.10.1')
+            library('srgutils', 'net.minecraftforge:srgutils:0.5.11')
+            library('diff', 'io.codechicken:DiffPatch:2.0.0.36') // Fuzzy patching TODO: [ForgeCommons] Switch to fat-jar so transtives don't leak?
+
+            library('jspecify-annotations', 'org.jspecify:jspecify:1.0.0')
+
+            library('fastcsv', 'de.siegmar:fastcsv:3.4.0')
+            library('commonsio', 'commons-io:commons-io:2.18.0')
+        }
+    }
+}
+
+rootProject.name = 'subproject-test'
+
+include ':subproject-one'
+include ':subproject-two'
+include ':subproject-3'

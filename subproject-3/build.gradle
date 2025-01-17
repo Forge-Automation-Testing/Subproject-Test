@@ -1,0 +1,128 @@
+//import net.ltgt.gradle.errorprone.ErrorProneOptions
+//import net.ltgt.gradle.nullaway.NullAwayOptions
+
+plugins {
+    id 'java-library'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.minecraftforge.licenser' version '1.0.1'
+    id 'net.minecraftforge.gradleutils' version '2.3.53'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+
+    // Enforce jSpecify annotations at compile-time
+//    id 'net.ltgt.errorprone' version '4.1.0'
+//    id 'net.ltgt.nullaway' version '2.1.0'
+
+    // modules
+    id 'org.gradlex.extra-java-module-info' version '1.8'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url = 'https://maven.minecraftforge.net/' }
+}
+
+group = 'net.minecraftforge'
+
+version = gradleutils.tagOffsetVersion
+println('Version: ' + version)
+
+dependencies {
+    implementation libs.gson
+    implementation libs.srgutils
+    implementation libs.diff
+
+    // FOR jSpecify
+    api libs.jspecify.annotations
+
+    // FOR MCPNames -- TODO CLEAN UP LATER
+    implementation libs.fastcsv
+    implementation libs.commonsio
+}
+
+extraJavaModuleInfo {
+    failOnMissingModuleInfo = false
+
+    automaticModule(libs.diff, 'io.codechicken.diffpatch')
+    automaticModule(libs.srgutils, 'net.minecraftforge.srgutils')
+}
+
+license {
+    header project.file('LICENSE-header.txt')
+    newLine false
+    exclude '**/ComparableVersion.java' // Apache class used as source-level dep as to not need the hundred+ other classes the library pulls in
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
+    withSourcesJar()
+}
+
+jar {
+    manifest {
+        attributes([
+                'Specification-Title':   'Forge Commons',
+                'Specification-Vendor':  'Forge Development LLC',
+                'Specification-Version':  gradleutils.gitInfo.tag,
+                'Implementation-Title':  'Forge Commons',
+                'Implementation-Vendor': 'Forge Development LLC',
+                'Implementation-Version': project.version
+        ] as LinkedHashMap, 'net/minecraftforge/mcmaven/')
+    }
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+}
+
+changelog {
+    from '0.0'
+}
+
+afterEvaluate {
+    def root = project.rootProject.projectDir
+    def local = project.projectDir
+
+    def result = local.absolutePath.substring(root.absolutePath.length())
+    if (result.startsWith(File.separator))
+        result = result.substring(1)
+    println result
+
+    println project.layout.projectDirectory
+    println project.rootProject.layout.projectDirectory
+
+    def dir = project.layout.projectDirectory.dir(".git")
+    if (!dir.getAsFile().exists())
+        dir = project.rootProject.layout.projectDirectory.dir(".git")
+    println dir
+}
+
+publishing {
+    publications.register('mavenJava', MavenPublication).configure {
+        artifactId = project.name
+        from components.java
+
+        pom {
+            name = project.name
+            description = 'Forge Commons'
+            url = 'https://github.com/MinecraftForge/minecraft-maven'
+
+            gradleutils.pom.setGitHubDetails(pom, 'minecraft-maven')
+
+            license gradleutils.pom.licenses.LGPLv2_1
+
+            developers {
+                developer gradleutils.pom.Developers.LexManos
+            }
+        }
+    }
+    repositories {
+        maven gradleutils.publishingForgeMaven
+    }
+}
+
+idea.module {
+    // IntelliJ IDEA does not do this by itself anymore...
+    downloadJavadoc = downloadSources = true
+}
