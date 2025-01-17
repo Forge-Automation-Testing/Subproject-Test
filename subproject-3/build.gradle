@@ -6,7 +6,7 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.minecraftforge.licenser' version '1.0.1'
-    id 'net.minecraftforge.gradleutils' version '2.3.53'
+    id 'net.minecraftforge.gradleutils' version '2.3.15'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
 
     // Enforce jSpecify annotations at compile-time
@@ -78,24 +78,6 @@ compileJava {
 
 changelog {
     from '0.0'
-}
-
-afterEvaluate {
-    def root = project.rootProject.projectDir
-    def local = project.projectDir
-
-    def result = local.absolutePath.substring(root.absolutePath.length())
-    if (result.startsWith(File.separator))
-        result = result.substring(1)
-    println result
-
-    println project.layout.projectDirectory
-    println project.rootProject.layout.projectDirectory
-
-    def dir = project.layout.projectDirectory.dir(".git")
-    if (!dir.getAsFile().exists())
-        dir = project.rootProject.layout.projectDirectory.dir(".git")
-    println dir
 }
 
 publishing {

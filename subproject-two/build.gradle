@@ -6,7 +6,7 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.minecraftforge.licenser' version '1.0.1'
-    id 'net.minecraftforge.gradleutils' version '2.3.53'
+    id 'net.minecraftforge.gradleutils' version '2.3.15'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
 
     // Enforce jSpecify annotations at compile-time
@@ -25,7 +25,7 @@ repositories {
 
 group = 'net.minecraftforge'
 
-version = gradleutils.tagOffsetVersion
+version = gradleutils.getTagOffsetVersion('subproject-two')
 println('Version: ' + version)
 
 dependencies {
