@@ -1,0 +1,19 @@
+name: Build Subproject One
+
+on:
+  push:
+    branches: [ "master" ]
+    paths:
+      - 'subproject-one/**'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    uses: Jonathing/SharedActions/.github/workflows/gradle.yml@feat/jonathing/subproject-versioning-test
+    with:
+      java: 17
+      gradle_tasks: ":subproject-one:build"
+    secrets:
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
