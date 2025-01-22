@@ -13,6 +13,8 @@ jobs:
   build:
     uses: Jonathing/SharedActions/.github/workflows/gradle.yml@feat/jonathing/subproject-versioning-test
     with:
+      subproject: "subproject-one"
+      tag_prefix: "subproject-1"
       java: 17
       gradle_tasks: ":subproject-one:build"
     secrets:
