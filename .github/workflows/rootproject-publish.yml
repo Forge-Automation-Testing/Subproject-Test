@@ -1,0 +1,19 @@
+name: Build Root Project
+on:
+  push:
+    branches: master
+    paths:
+      - '!settings.gradle'
+      - '!subproject-3/**'
+      - '!subproject-one/**'
+      - '!subproject-two/**'
+permissions:
+  contents: read
+jobs:
+  build:
+    uses: MinecraftForge/SharedActions/.github/workflows/gradle.yml@main
+    with:
+      java: 21
+      gradle_tasks: build
+    secrets:
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}

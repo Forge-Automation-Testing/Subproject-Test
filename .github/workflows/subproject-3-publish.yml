@@ -5,6 +5,7 @@ on:
     branches: [ "master" ]
     paths:
       - 'subproject-3/**'
+      - '!settings.gradle'
 
 permissions:
   contents: read
@@ -14,6 +15,7 @@ jobs:
     uses: Jonathing/SharedActions/.github/workflows/gradle.yml@feat/jonathing/subproject-versioning-test
     with:
       subproject: "subproject-3"
+      tag_prefix: subproject-3
       java: 17
       gradle_tasks: ":subproject-3:build"
     secrets:

@@ -6,7 +6,7 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.minecraftforge.licenser' version '1.0.1'
-    id 'net.minecraftforge.gradleutils' version '2.3.16'
+    id 'net.minecraftforge.gradleutils' version '2.3-subproject-test'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
 
     // Enforce jSpecify annotations at compile-time
